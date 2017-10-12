@@ -203,7 +203,7 @@ decide(true, c, d) //c (Any)
 
 var result = decide(true, 'c', 'd') // result in Any type
 if(result.isInstanceOf[Char]){
-  val charResult = resilt.asInstanceOf[Char]
+  val charResult = result.asInstanceOf[Char]
 }
 ```
 
