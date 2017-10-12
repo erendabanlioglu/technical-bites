@@ -27,7 +27,7 @@ def numberStatus(a:Int) = {
 ```
 
 
-TYPES
+## TYPES
 
 ```scala
 def add(x:Int, y:Int) = x + y
@@ -39,13 +39,35 @@ add(substract(10,3).round.toInt,substract(100,32).round.toInt)
 
 ```
 
+## RETURN TYPES
+
 ```
-           scala.Any
+            scala.Any
      ________|     |_________
      |                      | 
 scala.AnyVal        scala.AnyRef
 ```
 
-RETURN TYPES
+Code
+```scala
+def add(x:Int, y:Int) = {
+  if(x > 10) (x + y).toString
+  else x + y
+})
 
+```
+Interpreation
+```scala
+add: (x: Int, y: Int)Any
+```
 
+## UNIT
+
+- Unit ~= void
+- It is child of Any type, assignable. 
+- It is an object
+
+```scala
+    def add(x:Int, y:Int):Unit = x + y 
+```
+returns ```()```
