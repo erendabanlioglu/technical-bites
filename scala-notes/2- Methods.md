@@ -27,7 +27,7 @@ def numberStatus(a:Int) = {
 ```
 
 
-## TYPES
+## Types
 
 ```scala
 def add(x:Int, y:Int) = x + y
@@ -39,7 +39,7 @@ add(substract(10,3).round.toInt,substract(100,32).round.toInt)
 
 ```
 
-## RETURN TYPES
+## Return Types
 
 ```
             scala.Any
@@ -61,7 +61,7 @@ Interpreation
 add: (x: Int, y: Int)Any
 ```
 
-## UNIT
+## Unit
 
 - Unit ~= void
 - It is child of Any type, assignable. 
@@ -72,7 +72,7 @@ def add(x:Int, y:Int):Unit = x + y
 ```
 returns ```()```
 
-## RECURSION
+## Recursion
 
 Return type must be declared
 
@@ -85,7 +85,7 @@ def factorial(n:BigInt):BigInt = {
 
 it will have stack overflow error on big big numbers. To fix see below
 
-### TAIL OPTIMIZED
+### Tail Optimized
 
 tailrec = tail recursive 
 
@@ -102,7 +102,7 @@ def getFactorial(n:Int) = factorial(n, 1)
 ```
 
 
-## METHODS IN METHODS
+## Methods In Methods
 
 ```scala
 import scala.annotation.tailrec
@@ -117,7 +117,7 @@ def getFactorial(n:Int) = {
 }
 ```
 
-## LAST METHOD NAME BENDER
+## Last Method Name Bender
 
 ```scala
 def `Summation of` (x:Int, y:Int) = x +y
@@ -132,13 +132,13 @@ def areWeHere_? = true
 
 this is a method, returns boolean
 
-## OPERATOR OVERLOADING
+## Operator Overloading
 
 ```scala
 def +(x:Int, y:Int) = x + y
 ```
 
-## METHOD OVERLOADING
+## Method Overloading
 
 ```scala
 def addNum(x:Int) = x + 1
@@ -150,9 +150,9 @@ addNum(40.0)
 addNum("Hello")
 ```
 
-## ARGUMENTS
+## Arguments
 
-#### NAMED ARGUMENTS
+#### Named Arguments
 
 ```scala
 def processNumbers(b:Boolean, x:Int,  y:Int) = if(b) x else y
@@ -161,7 +161,7 @@ processNumbers(true, 10, 41) //10
 processNumbers(x = 10, y = 41, b = true) //10
 ```
 
-#### DEFAULT ARGUMENTS
+#### Default Arguments
 
 ```scala
 def processNumbers(b:Boolean = true, x:Int,  y:Int) = if(b) x else y
@@ -170,7 +170,7 @@ processNumbers(10, 41) //error
 processNumbers(x = 10, y = 41) //10
 ```
 
-## IS/AS INSTANCE OF
+## IS/AS Instance Of
 
 ```scala
 3.isInstanceOf[Int] //true
@@ -192,7 +192,7 @@ def decide(x:Any) = if (x.isInstanceOf[Int]) x.asInstanceOf[Int] + 1 else -1
 decide(4) //5
 decide("Hello") //-1
 ```
-## PARAMETERIZED TYPES ON METHODS
+## Parameterized Types On Methods
 
 ```scala
 def decide(b:Boolean, x:Any, y:Any):Any = if (b) x else y
