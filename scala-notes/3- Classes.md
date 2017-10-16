@@ -22,7 +22,7 @@ ada.firstName -> actually is a get method, not direct access
 ```javap -p``` you can see java byte code
 
 
-## JAVA GETTER AND SETTERS
+## Java Getter And Setter
 
 ```scala
 import scala.beans.BeanProperty
@@ -38,7 +38,7 @@ class Employee(@BeanProperty val firstName:String,
 - lastName will have getter and setter because it's *var*
 
 
-## CONSTRUCTORS
+## Constructors
 
 ```scala
 import scala.beans.BeanProperty
@@ -70,7 +70,7 @@ val ada = new Employee("Ada", "Surname")
 println(ada.title)
 ```
 
-## CONSTRUCTORS NAMED AND DEFAULT ARGUMENTS
+## Constructors Named And Default Arguments
 
 ```scala
 import scala.beans.BeanProperty
@@ -87,7 +87,7 @@ class Employee(@BeanProperty val firstName:String,
 val person = new Employee(lastName = "Dany", firstName = "Awesome")
 ```
 
-## METHODS IN CLASSES
+## Methods in Classes
 
 ```scala
 import scala.beans.BeanProperty
@@ -100,7 +100,7 @@ class Employee(@BeanProperty val firstName:String,
     
     def changeLastName(ln:String) = new Employee(firstName, ln, lastName)
     
-    def copy(firstName:String = this.firstName,  lastName:String= this.lastName, title:String:this.title){
+    def copy(firstName:String = this.firstName,  lastName:String= this.lastName, title:String = this.title){
       new Employee(firstName, lastName, title)
     }
 }
@@ -117,7 +117,7 @@ val newPerson2 = person.copy(lastName = "new Surname 2")
 println(newPerson2.fullName)
 ```
 
-## PRECONDITIONS, EXCEPTION AND EXCEPTION HANDLING
+## Preconditions, Exception and Exception Handling
 
 ```scala
 import scala.beans.BeanProperty
@@ -144,4 +144,246 @@ try {
 } finally { 
   // run always
 }
+```
+
+## Subclasses
+
+You can have multiple classes in same file
+Inheritance must have **is-a** relationship
+
+```scala
+class Department(val name:String)
+
+class Manager(firstName:String, lastName: String, title: String, val department:Department) 
+      extends Employee(firstName, lastName, title)
+  
+```
+
+```scala
+val mathematics = new Department("Mathematics")
+
+//val alan = new Manager("Alan", "Turing", "Mathematician, Logician", mathematics)
+
+val alan:Manager = new Manager("Alan", "Turing", "Mathematician, Logician", mathematics)
+val alanEmployee:Employee = alan
+
+println(alanEmployee.firstName) 
+// println(alanEmployee.department.name) //Incorrect!
+  
+```
+
+```scala
+def extractFirstName(e:Employee) = e.firstName
+println(alan.firstName) 
+println(alanEmployee.firstName) 
+```
+
+## Overriding Methods
+
+```scala
+class Department(val name:String)
+
+class Manager(firstName:String, lastName: String, title: String, val department:Department) 
+      extends Employee(firstName, lastName, title){
+      
+    override def fulllName = s"$firstName $lastName. ${department.name} Manager"
+    
+    override def copy(firstName:String = this.firstName,  lastName:String = this.lastName, title:String = this.title) = {
+      new Manager(firstName, lastName, title, Department("Toys"))
+    }
+    
+/*  Overloading   
+    def copy(firstName:String = this.firstName,  lastName:String = this.lastName, title:String = this.title, department: Department = this.department) = {
+      new Manager(firstName, lastName, title, department)
+    } 
+ */
+}
+  
+```
+
+## Equals, To String, Hashcode
+
+- In AnyRef class
+
+```scala
+val ada = new Employee("Ada", "Byron", "Programmer")
+val newAda = new Employee("Ada", "Byron", "Programmer")
+
+ada == newAda // return false unless override equals
+    
+```
+- **eq** referance equality 
+- **equals** and **==** object equality
+
+```scala
+import scala.beans.BeanProperty
+
+class Employee(@BeanProperty val firstName:String, 
+               @BeanProperty val lastName:String,
+               val title:String = "Programmer"){
+    
+    ...
+    
+    override def equals(x:Any):Booelean = {
+      if(x.isInstanceOf[Employee]) false
+      else {
+        val other = x.asInstanceOf[Employee]
+        other.firstName ==  this.firstName &&
+        other.lastName == this.lastName &&
+        other.title == this.title
+      }
+    }
+    
+    override def hashCode:Int = {
+      // var just mutable in this context
+      var result = 19;
+      result = 31 * result + firstName.hashCode;
+      result = 31 * result + lastName.hashCode;
+      result = 31 * result + title.hashCode;
+    }
+    
+    override def toString = s"Employee ($firstName, $lastName, $title)"
+}
+```
+
+```scala
+val ada = new Employee("Ada", "Byron", "Programmer")
+val newAda = new Employee("Ada", "Byron", "Programmer")
+
+ada == newAda // return true
+ada eq newAda // return false
+
+val anotherAda = ada
+ada eq anotherAda //return true
+
+ada.hashCode == newAda //true
+    
+```
+
+## Case Classes
+
+- Automatically defined Equals, To String, Hashcode
+- You can still override 
+
+```scala
+case class Department(val name:String)
+```
+
+
+```scala
+val toys = new Department("Toys")
+val toys2 = new Department("Toys")
+
+println(toys) // prints "Department(Toys)"
+toys == toys2 // true
+toys.hashCode == toys2.hashCode //true
+```
+
+Have automatic pattern matching
+
+
+```scala
+val name = toys match {
+              case Department(n) => n
+              case _ => "Unknown"
+            }
+ println(name)
+ 
+ // other way
+ val Department(name2) = toys
+ println(name2)
+ 
+```
+
+## Abstract Classes
+
+- Can't be instantiated 
+- Have zero or more abstract methods
+- Don't have implementations
+- Part of inheritance tree, any subtype can be assigned
+
+```scala
+abstract class Person{
+  def firstName:String
+  def lastName:String
+}
+
+class Employee(@BeanProperty val firstName:String, 
+               @BeanProperty val lastName:String,
+               val title:String = "Programmer") extends Person {
+               
+ }
+
+```
+
+```scala
+val ada = new Employee("Ada", "Byron", "Programmer")
+val mathematics = new Department("Mathematics")
+val alan:Manager = new Manager("Alan", "Turing", "Mathematician, Logician", mathematics)
+
+//Polymorphism
+val alanEmployee:Employee = alan
+val alanPerson:Person = alan
+val adaPeson:Person = ada
+```
+
+## Parameterized Types On Classes
+
+```scala
+case class Box[T](t:T)
+```
+
+```scala
+val intBox = new Box(1)
+val intBox2:Box[Int] = Box(1)
+val intBox3 = Box(1):Box[3]
+val intResult:Int = intBox3.t
+
+val stringBox = new Box("Hello")
+val stringBoxExplicit = Box[String]("Hello")
+val managerBox = Box(new Manager("Kathy", "Sierra", "Programmer", "Department("IT"))) //Box[Manager]
+val managerBox = Box[Employee](new Manager("Kathy", "Sierra", "Programmer", "Department("IT"))) //Box[Employee]
+
+val doubleBoxBox = Box(Box(4.0)) //Box(Box[Double])
+val doubleResult:Double = doubleBoxBox:t
+```
+
+```scala
+case class Copule[A, B](first:A, second:B)
+```
+
+```scala
+val coupleIntString = new Couple(10, "Scala")
+val coupleIntString2:Couple[Int, String] = Couple(10, "Scala")
+val coupleStringString = new Couple("one", "two")
+val coupleDoubleInt = new Couple(30.123, 3)
+val coupleStringCoupleIntDouble = Couple("hello", Couple(3, 22.2))
+```
+
+## Parameterized Methods In Classes
+
+```scala
+case class Copule[A, B](first:A, second:B){
+  def swap = new Couple(second, first)
+  // explicit
+  // def swap: Couple[B,A] = new Couple(second, first)
+}
+
+case class Box[T](t:T){
+  def coupleWith[U](u:U):Box[Couple[T,U]] = Box(Couple(t,u))
+}
+```
+
+```scala
+val intBox = new Box(200)
+val coupeIntStringBox = intBox4.coupleWith("Scala")
+val coupeIntStringBox:Box[Couple[Int,String]] = intBox4.coupleWith("Scala")
+
+coupeIntStringBox.t.first
+coupeIntStringBox.t.second
+```
+
+```scala
+val employeeCouple = new Couple(new Employee("John", "McCarthy"), new Employee("Jean Claude", "Van Damme"))
+employeeCouple.swap
 ```
