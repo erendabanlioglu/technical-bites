@@ -63,7 +63,7 @@ s - bring values
 ```scala 
 val ticketCost = 50
 val bandName = "Metallica"
-println(f"The $bandname%s tickets are probably $$$ticketCost%1.2f")
+println(s"The $bandname%s tickets are probably $$$ticketCost%1.2f")
 ```
 
 f- bring values and allow to format
