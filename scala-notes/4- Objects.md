@@ -123,7 +123,7 @@ object Employee {
 }
 
 object EmployeeDesignRunner extends App {
-  val employee = new Employee( "Kent", "Superman", "Janitor")
+  val employee = new Employee.create("Kent", "Superman", "Janitor")
   employee.hiredate //<date now>
 }
 ```
@@ -146,7 +146,7 @@ object Employee {
 }
 
 object EmployeeDesignRunner extends App {
-  val employee = new Employee( "Kent", "Superman", "Janitor")
+  val employee = new Employee.create( "Kent", "Superman", "Janitor")
   employee.hiredate //<date now>
 }
 ```
