@@ -49,7 +49,7 @@ object Options extends App {
 }
 ```
 
-#Option Methods
+## Option Methods
 
 ```scala
 object Options extends App {
