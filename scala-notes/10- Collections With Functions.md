@@ -63,7 +63,7 @@ object FilterFunction extends App {
 }
 ```
 
-## Forach
+## Foreach
 
 returns unit
 
@@ -79,5 +79,38 @@ object ForEach extends App {
                                         // ()
                                         
   a foreach println // 1 \n 2 \n .....
+}
+```
+
+## FlatMap
+
+- flatten and maps
+- Can be used in List, Set, Map, Stream, String and Option
+
+```scala
+object FlatMap extends App {
+  val a = List(1,2,3,4,5)
+  a.map(x => List(-x, 0, x))          // List(List(-1, 0, 1), List(-2, 0, 2), ..
+  a.map(x => List(-x, 0, x)).flatten  // List(-1, 0, 1, -2, 0, 2, ..
+  a.flatmap(x => List(-x, 0, x))      // List(-1, 0, 1, -2, 0, 2, ..
+                                    
+  val b:List[List[List[Int]]] = List(List(List(1,2,3), List(4,5,6)), List(List(7,8,9), List(10,11,12)))
+  b.flatMap(c => c)                   // List(List(1,2,3), List(4,5,6), List(7,8,9), List(10,11,12)) - went down 1 level
+  b.flatMap(c => c).flatMap(c => c)   // List(1,2,3,4,5,6,7,8,9,10,11,12) - went down 2 level
+  
+  Set(2,4,10,11).flatMap(x => Set(x, x * 5)) //Set(10, 20, 2, 50, 11, 55, 4)
+  
+  val origMap = Map(1 -> "One", 2 -> "Two", 3 -> "Three")
+  origMap.flatMap(t => Map(t._1 -> t._2, (t._1 * 100) -> (t._2 + " Hundred"))
+  //Map( 1 -> One, 2 -> Two, 3 -> Three, 300 -> Three Hundred, 200 -> Two Hundred, 100 -> One Hundred)
+  
+  Some(4).map(x => Some(x + 19))                                      // Some(Some(23))
+  Some(4).flatMap(x => Some(x + 19))                                  // Some(23)
+  
+  None.flatMap(x => Some(x + 19))                                     // Error!
+  None.asInstanceOf[Option[Int]].flatMap(x => Some(x + 19))           // None
+  Some(10).flatMap(x => None)                                         // None
+  
+  List(Some(4), None, Some(5), None, None, Some(10)).flatMap(x => x)  //List(4, 5, 10)
 }
 ```
