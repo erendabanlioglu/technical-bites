@@ -114,3 +114,86 @@ object FlatMap extends App {
   List(Some(4), None, Some(5), None, None, Some(10)).flatMap(x => x)  //List(4, 5, 10)
 }
 ```
+
+## For Comprehensions
+
+- They are just map, flatMap, withFilter and foreach behind the scenes
+- Can be assigmnd to a value
+- Not loop
+- Retutn Lists, Sets, Options etc. 
+- Any object with map, flatMap, withFilter and foreach can be used in  For Comprehensions
+
+```scala
+object ForComprehensions extends App {
+
+  val result1 = for(i <- 1 to 10) yield (i + 1)       //Vector(2, 3, .... , 11)
+  val result2 = (1 to 10).map(i => i + 1)             //Vector(2, 3, .... , 11)
+  val result3 = for(i <- Some(100)) yield (i + 40)    //Some(140)
+  val result4 = Some(100).map(i => i + 40)            //Some(140)
+  
+  val result5 = for(i <- List(1,2,3,4);
+                    j <- List(5,6,7,8)) yield i, j)   //List((1,5), (1,6), .., .., (2,5), (2,6), ...)
+  val result6 =List(1,2,3,4).map(
+                i => List(5,6,7,8).map(j => (i,j)))   //List(List((1,5), (1,6), .., ..),List((2,5), (2,6), ...)
+  val result7 =List(1,2,3,4).flatMap(
+                i => List(5,6,7,8).map(j => (i,j)))   //List((1,5), (1,6), .., .., (2,5), (2,6), ...)
+                
+  val result8 = for(i <- List(1,2,3,4) if (i % 2) == 0;
+                    j <- List(5,6,7,8)) yield (i, j)  //List((2,5), (2,6), .., .., (4,5), (4,6), ...)
+                    
+  val result9 = for(i <- List(1,2,3,4)
+                    j <- List(5,6,7,8) if (j < 7)) yield (i, j)  //List((1,5), (1,6), (2,5), (2,6), ...)
+                    
+  val result10 = for (i <- List(1,2,3,4) 
+                      if (i % 2) == 0;
+                      j <- List(5,6,7,8)) yield (i, j)  //List((2,5), (2,6), .., .., (4,5), (4,6), ...)
+                            
+  val result11 = for (i <- List(1,2,3,4)
+                      j <- List(5,6,7,8) 
+                      if (j < 7)) yield (i, j)          //List((1,5), (1,6), (2,5), (2,6), ...)
+                      
+                      
+  val newResult8 = List(1,2,3,4).filter(i => i % 2 ==0).flatMap(i => List(5,6,7,8).map(j => (i,j)))  
+  //List((2,5), (2,6), .., .., (4,5), (4,6), ...)
+  
+  val newResult9 = List(1,2,3,4).flatMap(i =>  List(5,6,7,8).filter(j => j < 7).map(j => (i,j)))  
+  //List((1,5), (1,6), (2,5), (2,6), ...)
+  
+  // withFilter lazy filter
+  val newResult8_2 = List(1,2,3,4).withFilter(i => i % 2 ==0).flatMap(i => List(5,6,7,8).map(j => (i,j)))  
+  //List((2,5), (2,6), .., .., (4,5), (4,6), ...)
+  
+  val newResult9_2 = List(1,2,3,4)
+                      .flatMap(i =>  List(5,6,7,8)
+                        .withFilter(j => j < 7)
+                          .map(j => (i,j)))  
+  //List((1,5), (1,6), (2,5), (2,6), ...)
+}
+```
+
+## Fold and Reduce
+
+- Fold perform reduction operation with seed value
+- Reduce perform reduction operation without seed value
+- Can be applied collections
+
+```scala
+object FoldAndReduce extends App {
+  val foldLeftResult (1 to 10).foldLeft(0)((total: Int, next: Int) => total + next)   // 55
+  // Total 0, Next 1 /n Total 1, Next 2 /n  Total 3, Next 3 /n Total 6, Next 4 /n  ... Total 45, Next 10 
+  
+  val reduceLeftResult (1 to 10).recudeLeft(0)((total: Int, next: Int) => total + next)   // 55
+  // Total 0, Next 1 /n Total 1, Next 2 /n  Total 3, Next 3 /n Total 6, Next 4 /n  ...  Total 45, Next 10
+  
+  val foldRightResult (1 to 10).foldRight(0)((next: Int, total: Int) => total + next)   // 55
+  // Total 0, Next 10 /n Total 10, Next 9 /n  Total 19, Next 8/n  ... Total 54, Next 1 
+  
+  val reduceRightResult (1 to 10).reduceRight(0)((next: Int, total: Int) => total + next)   // 55
+  // Total 0, Next 10 /n Total 10, Next 9 /n  Total 19, Next 8/n  ... Total 54, Next 1
+  
+  // they are same as (1 to 10).sum
+  
+  //Shorthand
+  (1 to 10).foldLeft(0)(_ + _) // 55
+}
+```
