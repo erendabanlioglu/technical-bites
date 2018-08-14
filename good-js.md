@@ -17,7 +17,7 @@ function personFactory(firstName, lastName){
 
 evertime new person object created greet function object will be created and use too much memory.
 
-let johnDoe = personFactory("John", "Doe");
+let johnDoe = personFactory("John", "Doe");  
 let janeDoe = personFactory("Jane", "Doe");
 
 johnDoe.greet === janeDoe.greet --> false
