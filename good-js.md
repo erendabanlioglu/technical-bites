@@ -41,7 +41,7 @@ let personFactory = (function(firstName, lastName){
 
 We use immediatly called method to don't make `personPrototype` global.
 
-let johnDoe = personFactory("John", "Doe");
+let johnDoe = personFactory("John", "Doe");  
 let janeDoe = personFactory("Jane", "Doe");
 
 johnDoe.greet === janeDoe.greet --> true
