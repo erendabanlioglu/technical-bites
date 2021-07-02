@@ -13,13 +13,13 @@
 - Etag controls if there is a new version of the content/asset
 - Response Header - Etag, If-None-Match
 
-￼![image3](https://user-images.githubusercontent.com/8245836/124277457-5a59e800-db45-11eb-9f29-01bfb841d205.png)
+![image3](https://user-images.githubusercontent.com/8245836/124277457-5a59e800-db45-11eb-9f29-01bfb841d205.png)
 
 
 
-####Choose the Cache-Control Strategy
+#### Choose the Cache-Control Strategy
 
-￼![http-cache-decision-tree](https://user-images.githubusercontent.com/8245836/124277497-63e35000-db45-11eb-9977-8d895b5546f5.png)
+![http-cache-decision-tree](https://user-images.githubusercontent.com/8245836/124277497-63e35000-db45-11eb-9977-8d895b5546f5.png)
 
 
 More https://csswizardry.com/2019/03/cache-control-for-civilians/
